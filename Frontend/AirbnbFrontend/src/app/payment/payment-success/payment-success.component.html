@@ -1,0 +1,45 @@
+<div class="success-container">
+  <div class="success-content">
+    <div class="success-icon">✓</div>
+    <h1>Payment Successful!</h1>
+    <p class="message">Your booking has been confirmed. A confirmation email has been sent to your registered email address.</p>
+    
+    <div class="booking-details">
+      <div class="detail-item">
+        <span class="label">Payment ID:</span>
+        <span class="value">{{ paymentId }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Booking ID:</span>
+        <span class="value">{{ bookingId }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Amount Paid:</span>
+        <span class="value">₹{{ amount }}</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" (click)="downloadInvoice()" [disabled]="invoiceDownloading">
+        {{ invoiceDownloading ? 'Downloading...' : 'Download Invoice' }}
+      </button>
+      <button class="btn btn-secondary" (click)="goToMyBookings()">
+        My Bookings
+      </button>
+      <button class="btn btn-outline" (click)="goHome()">
+        Back to Home
+      </button>
+    </div>
+
+    <div class="next-steps">
+      <h3>What's Next?</h3>
+      <ol>
+        <li>Check your email for booking confirmation details</li>
+        <li>Review your booking from "My Bookings" section</li>
+        <li>Arrive at the hotel 15 minutes before check-in time</li>
+        <li>Enjoy your stay and leave us a review!</li>
+      </ol>
+    </div>
+  </div>
+</div>
+

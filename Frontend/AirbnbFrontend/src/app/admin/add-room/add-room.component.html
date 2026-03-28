@@ -1,0 +1,36 @@
+<div class="form-container">
+  <h1>Add New Room</h1>
+  <form [formGroup]="roomForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group">
+      <label>Select Hotel</label>
+      <select formControlName="hotelId" class="form-control">
+        <option value="">Choose a hotel...</option>
+        <option *ngFor="let hotel of hotels" [value]="hotel.id">{{ hotel.name }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Room Type</label>
+      <select formControlName="roomType" class="form-control">
+        <option value="">Choose room type...</option>
+        <option value="single">Single Room</option>
+        <option value="double">Double Room</option>
+        <option value="suite">Suite</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Capacity (Guests)</label>
+      <input type="number" formControlName="capacity" class="form-control" min="1">
+    </div>
+    <div class="form-group">
+      <label>Price Per Night (₹)</label>
+      <input type="number" formControlName="price" class="form-control" min="1000">
+    </div>
+    <div class="form-group">
+      <label>Amenities</label>
+      <input type="text" formControlName="amenities" class="form-control" placeholder="WiFi, TV, AC...">
+    </div>
+    <button type="submit" [disabled]="!roomForm.valid || loading" class="btn-submit">
+      {{ loading ? 'Adding...' : 'Add Room' }}
+    </button>
+  </form>
+</div>

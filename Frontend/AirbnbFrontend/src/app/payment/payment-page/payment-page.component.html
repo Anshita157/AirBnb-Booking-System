@@ -1,0 +1,206 @@
+<div class="payment-container">
+  <div class="payment-header">
+    <h1>Secure Payment</h1>
+    <p>Complete your booking with a secure payment</p>
+  </div>
+
+  <div class="payment-content">
+    <div class="payment-form-section">
+      <!-- Payment Method Selector -->
+      <div class="payment-methods">
+        <h2>Select Payment Method</h2>
+        <div class="methods-grid">
+          <button 
+            type="button" 
+            class="method-btn" 
+            [class.active]="selectedMethod === 'card'"
+            (click)="onMethodChange('card')">
+            <span class="method-icon">💳</span>
+            <span class="method-name">Credit/Debit Card</span>
+          </button>
+          <button 
+            type="button" 
+            class="method-btn" 
+            [class.active]="selectedMethod === 'upi'"
+            (click)="onMethodChange('upi')">
+            <span class="method-icon">📱</span>
+            <span class="method-name">UPI</span>
+          </button>
+          <button 
+            type="button" 
+            class="method-btn" 
+            [class.active]="selectedMethod === 'bank'"
+            (click)="onMethodChange('bank')">
+            <span class="method-icon">🏦</span>
+            <span class="method-name">Net Banking</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Payment Form -->
+      <form [formGroup]="paymentForm" (ngSubmit)="processPayment()">
+        <!-- Credit Card Form -->
+        <div *ngIf="selectedMethod === 'card'" class="form-section">
+          <h3>Card Details</h3>
+          <div class="form-group">
+            <label for="cardNumber">Card Number</label>
+            <input 
+              type="text" 
+              id="cardNumber"
+              formControlName="cardNumber"
+              placeholder="1234 5678 9012 3456"
+              maxlength="19"
+              class="form-control">
+            <small *ngIf="paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched" 
+              class="error">
+              Card number must be 13-19 digits
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="cardHolder">Card Holder Name</label>
+            <input 
+              type="text" 
+              id="cardHolder"
+              formControlName="cardHolder"
+              placeholder="John Doe"
+              class="form-control">
+            <small *ngIf="paymentForm.get('cardHolder')?.invalid && paymentForm.get('cardHolder')?.touched" 
+              class="error">
+              Please enter valid card holder name
+            </small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expiryDate">Expiry Date</label>
+              <input 
+                type="text" 
+                id="expiryDate"
+                formControlName="expiryDate"
+                placeholder="MM/YY"
+                maxlength="5"
+                class="form-control">
+              <small *ngIf="paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched" 
+                class="error">
+                Format: MM/YY
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input 
+                type="password" 
+                id="cvv"
+                formControlName="cvv"
+                placeholder="123"
+                maxlength="4"
+                class="form-control">
+              <small *ngIf="paymentForm.get('cvv')?.invalid && paymentForm.get('cvv')?.touched" 
+                class="error">
+                CVV must be 3-4 digits
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPI Form -->
+        <div *ngIf="selectedMethod === 'upi'" class="form-section">
+          <h3>UPI Details</h3>
+          <div class="form-group">
+            <label for="upiId">UPI ID</label>
+            <input 
+              type="text" 
+              id="upiId"
+              formControlName="upiId"
+              placeholder="yourname@upi"
+              class="form-control">
+            <small *ngIf="paymentForm.get('upiId')?.invalid && paymentForm.get('upiId')?.touched" 
+              class="error">
+              Please enter valid UPI ID (e.g., name@upi)
+            </small>
+          </div>
+          <p class="info-text">You will be redirected to your UPI app to authorize the payment.</p>
+        </div>
+
+        <!-- Net Banking Form -->
+        <div *ngIf="selectedMethod === 'bank'" class="form-section">
+          <h3>Bank Account Details</h3>
+          <div class="form-group">
+            <label for="bankName">Bank Name</label>
+            <select id="bankName" formControlName="bankName" class="form-control">
+              <option value="">Select a bank</option>
+              <option value="HDFC">HDFC Bank</option>
+              <option value="ICICI">ICICI Bank</option>
+              <option value="SBI">State Bank of India</option>
+              <option value="AXIS">Axis Bank</option>
+              <option value="KOTAK">Kotak Mahindra Bank</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="accountNumber">Account Number</label>
+            <input 
+              type="text" 
+              id="accountNumber"
+              formControlName="accountNumber"
+              placeholder="1234567890"
+              class="form-control">
+            <small *ngIf="paymentForm.get('accountNumber')?.invalid && paymentForm.get('accountNumber')?.touched" 
+              class="error">
+              Account number must be at least 10 digits
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="ifscCode">IFSC Code</label>
+            <input 
+              type="text" 
+              id="ifscCode"
+              formControlName="ifscCode"
+              placeholder="HDFC0000001"
+              maxlength="11"
+              class="form-control">
+            <small *ngIf="paymentForm.get('ifscCode')?.invalid && paymentForm.get('ifscCode')?.touched" 
+              class="error">
+              IFSC code must be 11 alphanumeric characters
+            </small>
+          </div>
+          <p class="info-text">You will be redirected to your bank's payment gateway.</p>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn-pay"
+          [disabled]="loading">
+          {{ loading ? 'Processing...' : 'Pay ₹' + bookingAmount }}
+        </button>
+      </form>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="summary-section">
+      <h3>Order Summary</h3>
+      <div class="summary-item">
+        <span>Booking ID:</span>
+        <span class="booking-id">{{ bookingId }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Total Amount:</span>
+        <span class="amount">₹{{ bookingAmount }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Tax (18%):</span>
+        <span>₹{{ (bookingAmount * 0.18) | number: '1.0-2' }}</span>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-item total">
+        <span>Total Payable:</span>
+        <span class="total-amount">₹{{ (bookingAmount * 1.18) | number: '1.0-2' }}</span>
+      </div>
+      <div class="security-info">
+        <p>🔒 Your payment is secure and encrypted</p>
+      </div>
+    </div>
+  </div>
+</div>
+

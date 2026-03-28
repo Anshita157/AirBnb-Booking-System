@@ -1,0 +1,84 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Logo -->
+    <div class="navbar-brand">
+      <a routerLink="/home" class="logo">
+        <span class="logo-icon">🏠</span>
+        <span>AirBnB</span>
+      </a>
+    </div>
+
+    <!-- Menu Toggle for Mobile -->
+    <button class="mobile-toggle" (click)="toggleMobileMenu()">
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
+    </button>
+
+    <!-- Navigation Links -->
+    <div class="navbar-menu" [class.active]="mobileMenuOpen">
+      <!-- Search Bar -->
+      <div class="search-container">
+        <input
+          type="text"
+          placeholder="Search location..."
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="onSearch()"
+          class="search-input"
+        />
+        <button (click)="onSearch()" class="search-btn">
+          🔍
+        </button>
+      </div>
+
+      <!-- Navigation Items -->
+      <div class="nav-items">
+        <a routerLink="/home" routerLinkActive="active" (click)="closeMobileMenu()">
+          Home
+        </a>
+        <a
+          *ngIf="isAuthenticated && isAdmin"
+          routerLink="/admin/dashboard"
+          routerLinkActive="active"
+          (click)="closeMobileMenu()"
+        >
+          Admin
+        </a>
+      </div>
+
+      <!-- User Menu -->
+      <div class="user-menu">
+        <div *ngIf="!isAuthenticated" class="auth-buttons">
+          <a routerLink="/auth/login" class="btn-login" (click)="closeMobileMenu()">
+            Login
+          </a>
+          <a routerLink="/auth/signup" class="btn-signup" (click)="closeMobileMenu()">
+            Sign Up
+          </a>
+        </div>
+
+        <div *ngIf="isAuthenticated" class="user-profile">
+          <span class="user-name">{{ currentUser?.name }}</span>
+          <div class="dropdown">
+            <button class="dropdown-toggle">▼</button>
+            <div class="dropdown-menu">
+              <a routerLink="/profile" (click)="closeMobileMenu()">
+                Profile
+              </a>
+              <a routerLink="/booking/my-bookings" (click)="closeMobileMenu()">
+                My Bookings
+              </a>
+              <a routerLink="/booking/history" (click)="closeMobileMenu()">
+                Booking History
+              </a>
+              <hr />
+              <button (click)="onLogout()" class="logout-btn">
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

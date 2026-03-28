@@ -1,0 +1,17 @@
+@import '../manage-hotels/manage-hotels.component.css';
+
+.status-select,
+.role-select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.status-select:focus,
+.role-select:focus {
+  outline: none;
+  border-color: #667eea;
+}
