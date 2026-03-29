@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -21,10 +23,12 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       positionClass: 'toast-top-right',
@@ -32,10 +36,10 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
       progressBar: true,
       progressAnimation: 'increasing'
     }),
-    AppRoutingModule,  // Move this BEFORE feature modules
     SharedModule,
     AuthModule,
-    HomeModule
+    HomeModule,
+    AppRoutingModule  // Routing module LAST (contains wildcard route)
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
